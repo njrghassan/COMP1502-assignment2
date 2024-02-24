@@ -5,10 +5,17 @@
 2. Akram Altabba
 3. Abdulrahman Muhammad
 
-##Ghassan Alnajjar
-1. File structure
-2. Class manager 
-3. Data Storage (aka load files)
+## Ghassan Alnajjar
+1. File structure, Added classes 
+2. Data Storage (aka load files)
+3. Save fils
+4. Main menu display (Case fils)
+
+## Akram Altabba
+1. N/A
+
+## Abdulrahman Muhammad
+1. N/A
 
 
 
