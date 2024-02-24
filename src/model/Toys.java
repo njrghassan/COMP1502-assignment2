@@ -1,6 +1,7 @@
 package model;
 
-public class Toys {
+public abstract class Toys {
+
     private String SN;
     private String name;
     private String brand;
@@ -9,6 +10,15 @@ public class Toys {
     private int ageAppropriate;
 
 
+	/**
+	 * This is the constructor of the Toys class
+	 * @param SN
+	 * @param name
+	 * @param brand
+	 * @param price
+	 * @param avaiableCount
+	 * @param ageAppropriate
+	 */
     public Toys(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate){
         this.SN = SN;
 		this.name = name;
@@ -24,8 +34,8 @@ public class Toys {
 	}
 
 
-	public void setSN(String sN) {
-		SN = sN;
+	public void setSN(String SN) {
+		this.SN = SN;
 	}
 
 
