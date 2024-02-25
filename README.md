@@ -8,8 +8,9 @@
 ## Ghassan Alnajjar
 1. File structure, Added classes 
 2. Data Storage (aka load files)
-3. Save fils
-4. Main menu display (Case fils)
+3. Save files
+4. Main and Search menus
+5. Search by serial number function
 
 ## Akram Altabba
 1. N/A

@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -26,12 +27,13 @@ public class AppManager {
     }
 
     public void displayMenuMethod() throws IOException{
+        menu.displayMenu();
         Scanner input = new Scanner(System.in);
         int option = input.nextInt();
 
         switch (option){
             case 1:
-                //searchInventory();
+                searchInventory();
                 break;
             case 2:
                 //addNewToy();
@@ -46,6 +48,58 @@ public class AppManager {
                 System.out.println("Invalid option");
                 break;
         }
+    }
+
+    public void searchInventory() throws IOException{
+        menu.displaySearchMenu();
+        Scanner input = new Scanner(System.in);
+        int option = input.nextInt();
+
+        switch (option){
+            case 1:
+                searchBySerialNumber();
+                break;
+            case 2:
+                //searchByToyName();
+                break;
+            case 3:
+                //searchByToyType();
+                break;
+            case 4:
+                displayMenuMethod();
+                break;
+            default:
+                System.out.println("Invalid option");
+                break;
+        }
+    }
+
+    public void searchBySerialNumber() throws IOException{
+        String serialNumber = menu.promoteSerialNumberInput();
+        ArrayList<Toys> foundToys = new ArrayList<Toys>();
+
+        for (Toys toy : toys){
+            if (toy.getSN().equals(serialNumber)){
+                foundToys.add(toy);
+            }
+        }
+
+        String purchsed = menu.searchResultPrompt(foundToys);
+        if (purchsed != null){
+            System.out.println("You have purchased " + purchsed);
+
+            for (Toys toy : toys){
+                if (toy.getSN().equals(purchsed)){
+                    toy.setAvaiableCount(toy.getAvaiableCount() - 1);
+                }
+            }
+            System.out.println("The Transaction is Seccessfully Terminated!");
+        }
+        else{
+            System.out.println("You are back to the search menu");
+        }
+
+        searchInventory();
     }
 
     public void loadFiles() throws IOException{
@@ -89,12 +143,10 @@ public class AppManager {
             else{
                 System.out.println("Invalid data");
             }
-
-            line = data.readLine();
         }
 
         data.close();
-        System.out.println("Data loaded successfully into ArrayList<Toys> toys.");
+        System.out.println(toys.size() + " toys loaded successfully.");
     }
 
     public void save() throws IOException{
@@ -102,7 +154,27 @@ public class AppManager {
         PrintWriter file = new PrintWriter(fw);
 
         for (Toys toy : toys){
-            file.println(toy);
+            char SerialNumber = toy.getSN().charAt(0);
+            if (SerialNumber == '0' || SerialNumber == '1'){
+                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Figures) toy).getClassification());
+            }
+            else if(SerialNumber == '2' || SerialNumber == '3'){
+                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Animals) toy).getMaterial() + ";" + ((Animals) toy).getSize());
+            }
+            else if (SerialNumber == '4' || SerialNumber == '5' || SerialNumber == '6'){
+                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Puzzles) toy).getType());
+            }
+            else if (SerialNumber == '7' || SerialNumber == '8' || SerialNumber == '9'){
+                String designers = "";
+                for (String designer : ((BoardGames) toy).getDesigners()){
+                    designers += designer + ",";
+                }
+                designers = designers.substring(0, designers.length() - 1);
+                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((BoardGames) toy).getMinPlayers() + "-" + ((BoardGames) toy).getMaxPlayers() + ";" + designers);
+            }
+            else{
+                System.out.println("Invalid data");
+            }
         }
 
         file.close();
