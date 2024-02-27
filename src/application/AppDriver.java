@@ -13,5 +13,6 @@ public class AppDriver {
     public static void main(String[] args) throws IOException {
         // This is the entry point of the application
         AppManager app = new AppManager();
+        app.run();
     }
 }

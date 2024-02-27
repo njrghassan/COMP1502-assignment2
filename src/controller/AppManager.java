@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,17 +14,27 @@ import model.*;
 
 public class AppManager {
 
+    // This is the menu object
     AppMenu menu = new AppMenu();
+    // This is the toys arraylist aka our database
     ArrayList<Toys> toys;
+
+    /**
+     * This is the main method of the application
+     * @throws IOException
+     */
+    public void run() throws IOException {
+        toys = new ArrayList<Toys>();
+        loadFiles();
+        displayMenuMethod();
+    }
 
     /**
      * This is the constructor of the AppManager class that handles the application logic
      * @throws IOException
      */
     public AppManager() throws IOException{
-        toys = new ArrayList<Toys>();
-        loadFiles();
-        displayMenuMethod();
+        
     }
 
     /**
@@ -55,6 +64,8 @@ public class AppManager {
                 System.out.println("Invalid option");
                 break;
         }
+
+        input.close();
     }
 
     /**
@@ -72,10 +83,10 @@ public class AppManager {
                 searchBySerialNumber();
                 break;
             case 2:
-                //searchByToyName();
+                searchByToyName();
                 break;
             case 3:
-                //searchByToyType();
+                searchByToyType();
                 break;
             case 4:
                 displayMenuMethod();
@@ -84,6 +95,8 @@ public class AppManager {
                 System.out.println("Invalid option");
                 break;
         }
+
+        input.close();
     }
 
     /**
@@ -103,6 +116,50 @@ public class AppManager {
             }
         }
 
+        searchProsses(foundToys);
+    }
+
+    /**
+     * This method handles the search by toy name option
+     * It prompts the user to enter a toy name and then searches the inventory for the toy with that name
+     * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
+     * @throws IOException
+     */
+    public void searchByToyName() throws IOException{
+        String toyName = menu.promoteToyNameInput(); // Prompts the user to enter a toy name
+        ArrayList<Toys> foundToys = new ArrayList<Toys>(); // This will store the found toys
+
+        // Search the inventory for the toy with the given name
+        for (Toys toy : toys){
+            if (toy.getName().toLowerCase().contains(toyName) && toyName.length() >= 3){
+                foundToys.add(toy);
+            }
+        }
+
+        searchProsses(foundToys);
+    }
+
+    public void searchByToyType() throws IOException{
+        String toyType = menu.promoteToyTypeInput(); // Prompts the user to enter a toy type
+        ArrayList<Toys> foundToys = new ArrayList<Toys>(); // This will store the found toys
+
+        // Search the inventory for the toy with the given type
+        for (Toys toy : toys){
+            if (toy.getClass().getSimpleName().toLowerCase().contains(toyType)){
+                foundToys.add(toy);
+            }
+        }
+
+        searchProsses(foundToys);
+    }
+
+    /**
+     * This method handles the search by toy type option
+     * It prompts the user to enter a toy type and then searches the inventory for the toy with that type
+     * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
+     * @throws IOException
+     */
+    public void searchProsses(ArrayList<Toys> foundToys) throws IOException{
         // If the toy is found, prompt the user to purchase it and then update the toy's available count
         String purchsed = menu.searchResultPrompt(foundToys);
         if (purchsed != null){

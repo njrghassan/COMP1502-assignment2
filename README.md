@@ -11,6 +11,8 @@
 3. Save files
 4. Main and Search menus
 5. Search by serial number function
+6. Search by name
+7. Search by category
 
 ## Akram Altabba
 1. N/A

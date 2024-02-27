@@ -50,7 +50,10 @@ public class AppMenu {
      */
     public String promoteToyNameInput() {
         System.out.println("Enter Toy Name:");
-        return input.nextLine();
+        String name = input.nextLine();
+
+        name.toLowerCase();
+        return name;
     }
 
     /**
