@@ -173,9 +173,9 @@ public class AppManager {
     }
 
     /**
-     * This method loads the data from the file and creates the toys
-     * @throws FileNotFoundException 
-     * @throws IOException
+     * This method loads the data from the file into the arraylist
+     * It reads the file and creates the toys based on the data in the file
+     * while adding them to their appropriate arraylist from the parent class (toys)
      */
     public void loadFiles(){
         // File stuff
@@ -228,7 +228,7 @@ public class AppManager {
                             toys.add(new BoardGames(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), minPlayers, maxPlayers, designers));
                         }
                         else{
-                            System.out.println("Invalid data");
+                            System.out.println("Invalid data in the file.");
                         }
                     }
                 } 
@@ -245,51 +245,61 @@ public class AppManager {
     }
 
     /**
-     * This method saves the data to the file
-     * @throws IOException
+     * This method saves the data from the arraylist into the file
+     * It writes the data to the file based on the type of the toy
      */
-    public void save() throws IOException{
+    public void save(){
         // File stuff
-        FileWriter fw = new FileWriter("res/toys.txt");
-        PrintWriter file = new PrintWriter(fw);
+        File fw = new File("res/toys.txt");
 
-        // Write the data to the file
-        for (Toys toy : toys){
-            char SerialNumber = toy.getSN().charAt(0); // Get the serial number of the toy
-
-            // Save the toys based on the serial number to the file. Each toy has a different number of attributes
-            // Figures
-            if (SerialNumber == '0' || SerialNumber == '1'){
-                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Figures) toy).getClassification());
-            }
-            // Animals
-            else if(SerialNumber == '2' || SerialNumber == '3'){
-                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Animals) toy).getMaterial() + ";" + ((Animals) toy).getSize());
-            }
-            // Puzzles
-            else if (SerialNumber == '4' || SerialNumber == '5' || SerialNumber == '6'){
-                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Puzzles) toy).getType());
-            }
-            // BoardGames
-            else if (SerialNumber == '7' || SerialNumber == '8' || SerialNumber == '9'){
-                // Getting the designers
-                String designers = "";
-                for (String designer : ((BoardGames) toy).getDesigners()){
-                    designers += designer + ",";
+        if (fw.exists()){
+            if (fw.isFile() && fw.canWrite()){
+                System.out.println("Saving Data Into Database...");
+                PrintWriter file = null;
+                try {
+                    file = new PrintWriter(fw);
+                    // Write the data to the file
+                    for (Toys toy : toys){
+                        char SerialNumber = toy.getSN().charAt(0); // Get the serial number of the toy
+                    
+                        // Save the toys based on the serial number to the file. Each toy has a different number of attributes
+                        // Figures
+                        if (SerialNumber == '0' || SerialNumber == '1'){
+                            file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Figures) toy).getClassification());
+                        }
+                        // Animals
+                        else if(SerialNumber == '2' || SerialNumber == '3'){
+                            file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Animals) toy).getMaterial() + ";" + ((Animals) toy).getSize());
+                        }
+                        // Puzzles
+                        else if (SerialNumber == '4' || SerialNumber == '5' || SerialNumber == '6'){
+                            file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((Puzzles) toy).getType());
+                        }
+                        // BoardGames
+                        else if (SerialNumber == '7' || SerialNumber == '8' || SerialNumber == '9'){
+                            // Getting the designers
+                            String designers = "";
+                            for (String designer : ((BoardGames) toy).getDesigners()){
+                                designers += designer + ",";
+                            }
+                            // Remove the last comma
+                            designers = designers.substring(0, designers.length() - 1);
+                            file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((BoardGames) toy).getMinPlayers() + "-" + ((BoardGames) toy).getMaxPlayers() + ";" + designers);
+                        }
+                        else{
+                            System.out.println("Invalid data");
+                        }
+                    }
+                } 
+                catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
-                // Remove the last comma
-                designers = designers.substring(0, designers.length() - 1);
-                file.println(toy.getSN() + ";" + toy.getName() + ";" + toy.getBrand() + ";" + toy.getPrice() + ";" + toy.getAvaiableCount() + ";" + toy.getAgeAppropriate() + ";" + ((BoardGames) toy).getMinPlayers() + "-" + ((BoardGames) toy).getMaxPlayers() + ";" + designers);
-            }
-            else{
-                System.out.println("Invalid data");
+                finally{
+                    file.close();
+                }
             }
         }
 
-        System.out.println("Saving Data Into Database...");
-        // Close the file
-        file.close();
-        
         System.out.println("******* THANKS FOR VISITTING US *******");
     }
 }
