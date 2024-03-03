@@ -1,8 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -27,14 +27,6 @@ public class AppManager {
         toys = new ArrayList<Toys>();
         loadFiles();
         displayMenuMethod();
-    }
-
-    /**
-     * This is the constructor of the AppManager class that handles the application logic
-     * @throws IOException
-     */
-    public AppManager() throws IOException{
-        
     }
 
     /**
@@ -182,60 +174,73 @@ public class AppManager {
 
     /**
      * This method loads the data from the file and creates the toys
+     * @throws FileNotFoundException 
      * @throws IOException
      */
-    public void loadFiles() throws IOException{
+    public void loadFiles(){
         // File stuff
-        FileReader inputFile = new FileReader("res/toys.txt");
-        BufferedReader data = new BufferedReader(inputFile);
-
-        String line;
+        File inputFile = new File("res/toys.txt");
+        String line = "";
         String[] currentData; // This will store the current line of data from line
+        
+        if (inputFile.exists()){
+            if (inputFile.isFile() && inputFile.canRead()){
+                Scanner data = null;
+                try {
+                    // Read the file and create the toys
+                    data = new Scanner(inputFile);
+                    while (data.hasNextLine()){
+                        line = data.nextLine(); // Read the line of data
+                        currentData = line.trim().split(";"); // Split the line of data into an array of strings
+                        char SerialNumber = currentData[0].charAt(0); // Get the serial number of the toy
+                    
+                        // Create the toys based on the serial number and add them to their aoopriate arraylist from the parent class (toys)
+                        // Figures
+                        if (SerialNumber == '0' || SerialNumber == '1'){
+                            toys.add(new Figures(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), currentData[6]));
+                        }
+                        // Animals
+                        else if(SerialNumber == '2' || SerialNumber == '3'){
+                            toys.add(new Animals(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), currentData[6], currentData[7].charAt(0)));
+                        }
+                        // Puzzles
+                        else if (SerialNumber == '4' || SerialNumber == '5' || SerialNumber == '6'){
+                            toys.add(new Puzzles(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), currentData[6].charAt(0)));
+                        }
+                        // BoardGames
+                        else if (SerialNumber == '7' || SerialNumber == '8' || SerialNumber == '9'){
+                            // Getting the min and max players
+                            String[] playersRange = currentData[6].split("-");
+                            int minPlayers = Integer.parseInt(playersRange[0]);
+                            int maxPlayers = Integer.parseInt(playersRange[1]);
+                        
+                            // Getting the designers
+                            String[] designers;
+                            if (currentData[7].contains(",")){
+                                designers = currentData[7].split(",");
+                            }
+                            else{
+                                // If there is only one designer
+                                designers = new String[1];
+                                designers[0] = currentData[7];
+                            }
 
-        // Read the file and create the toys
-        while ((line = data.readLine()) != null){
-            currentData = line.trim().split(";"); // Split the line of data into an array of strings
-            char SerialNumber = currentData[0].charAt(0); // Get the serial number of the toy
-
-            // Create the toys based on the serial number and add them to their aoopriate arraylist from the parent class (toys)
-            // Figures
-            if (SerialNumber == '0' || SerialNumber == '1'){
-                toys.add(new Figures(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), currentData[6]));
-            }
-            // Animals
-            else if(SerialNumber == '2' || SerialNumber == '3'){
-                toys.add(new Animals(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), currentData[6], currentData[7].charAt(0)));
-            }
-            // Puzzles
-            else if (SerialNumber == '4' || SerialNumber == '5' || SerialNumber == '6'){
-                toys.add(new Puzzles(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), currentData[6].charAt(0)));
-            }
-            // BoardGames
-            else if (SerialNumber == '7' || SerialNumber == '8' || SerialNumber == '9'){
-                // Getting the min and max players
-                String[] playersRange = currentData[6].split("-");
-                int minPlayers = Integer.parseInt(playersRange[0]);
-                int maxPlayers = Integer.parseInt(playersRange[1]);
-
-                // Getting the designers
-                String[] designers;
-                if (currentData[7].contains(",")){
-                    designers = currentData[7].split(",");
+                            toys.add(new BoardGames(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), minPlayers, maxPlayers, designers));
+                        }
+                        else{
+                            System.out.println("Invalid data");
+                        }
+                    }
+                } 
+                catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
-                else{
-                    // If there is only one designer
-                    designers = new String[1];
-                    designers[0] = currentData[7];
+                finally{
+                    data.close();
                 }
-                
-                toys.add(new BoardGames(currentData[0], currentData[1], currentData[2], Double.parseDouble(currentData[3]), Integer.parseInt(currentData[4]), Integer.parseInt(currentData[5]), minPlayers, maxPlayers, designers));
-            }
-            else{
-                System.out.println("Invalid data");
             }
         }
 
-        data.close();
         System.out.println(toys.size() + " toys loaded successfully.");
     }
 
