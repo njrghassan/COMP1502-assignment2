@@ -1,14 +1,14 @@
 package controller;
 
+// Importing the io packages and util packages
 import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
+// Importing the view and model classes
 import view.AppMenu;
 import model.*;
 
@@ -50,10 +50,14 @@ public class AppManager {
                 //removeToy();
                 break;
             case 4:
-                save();
+                giftSuggestion();
                 break;
+            case 5:
+                save();
+                System.exit(0);
             default:
-                System.out.println("Invalid option");
+                System.out.println("Invalid option. Please try again.");
+                displayMenuMethod();
                 break;
         }
 
@@ -145,6 +149,28 @@ public class AppManager {
         searchProsses(foundToys);
     }
 
+    public void giftSuggestion() throws IOException{
+        String[] userInput = menu.displayGiftSuggestion();
+
+        // Get the user's input
+        String age = userInput[0];
+        String toyType = userInput[1];
+        String minPrice = userInput[2];
+        String maxPrice = userInput[3];
+
+
+        // Search the inventory for the toys that match the user's input
+        ArrayList<Toys> foundToys = new ArrayList<Toys>();
+        for (Toys toy : toys){
+            if (toy.getAgeAppropriate() <= Integer.parseInt(age) && toy.getClass().getSimpleName().toLowerCase().contains(toyType) && toy.getPrice() >= Double.parseDouble(minPrice) && toy.getPrice() <= Double.parseDouble(maxPrice)){
+                foundToys.add(toy);
+                System.out.println(toy.getName() + " " + toy.getPrice() + " " + toy.getAgeAppropriate() + " " + toy.getClass().getSimpleName());
+            }
+        }
+
+        searchProsses(foundToys);
+    }
+
     /**
      * This method handles the search by toy type option
      * It prompts the user to enter a toy type and then searches the inventory for the toy with that type
@@ -169,8 +195,10 @@ public class AppManager {
         }
 
         // Go back to the search menu
-        searchInventory();
+        displayMenuMethod();
     }
+
+   
 
     /**
      * This method loads the data from the file into the arraylist
