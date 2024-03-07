@@ -1,9 +1,9 @@
 package view;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import exceptions.giftSuggestionException;
 import model.Toys;
 
 public class AppMenu {
@@ -13,11 +13,6 @@ public class AppMenu {
 
     // This method displays the main menu
     public void displayMenu() {
-        String welcome =    "*******************************************************************\n" +
-				            "*\t\tWELCOME TO TOY STORE COMPANY!\t\t  \t  *\n" +
-				            "*******************************************************************\n";
-
-        System.out.println(welcome);
         System.out.println("How We May Help You?\n");
         System.out.println("(1)\tSearch Inventory and purchase a Toy");
         System.out.println("(2)\tAdd New Toy");
@@ -99,6 +94,10 @@ public class AppMenu {
         return SNNumber;
     }
 
+    /**
+     * This method prompts the user to enter the serial number, name, brand, price, available count and age appropriate of the toy
+     * @return toy information
+     */
     public String[] displayGiftSuggestion (){
         // This method prompts the user to enter the age, type, minimum price and maximum price of the child
         String[] giftSuggestion = new String[4]; // age, type, minPrice, maxPrice
@@ -107,8 +106,24 @@ public class AppMenu {
 
         // Child age
         System.out.println("Enter the age of the child: ");
-        String age = input.nextLine();
-
+        String ageInput = input.nextLine();
+        int age;
+        try {
+            age = Integer.parseInt(ageInput);
+            if (age < 0){
+                throw new giftSuggestionException("Age cannot be negative");
+            }
+        }
+        catch (giftSuggestionException e){
+            System.out.println(e.getMessage());
+        }
+        catch (NumberFormatException e){
+            System.out.println("Age has to be a number");
+        }
+        finally {
+            ageInput = "9";
+        }
+        
         // Toy type
         System.out.println("Enter the type of the toy: ");
         String type = input.nextLine();
@@ -116,20 +131,49 @@ public class AppMenu {
 
         // Minimum price
         System.out.println("Enter the minimum price: ");
-        String minPrice = input.nextLine();
-        
+        String minPriceInput = input.nextLine();
+        try{
+            Double minPrice = Double.parseDouble(minPriceInput);
+            if (minPrice < 0){
+                throw new giftSuggestionException("Price cannot be negative");
+            }
+        }
+        catch (giftSuggestionException e){
+            System.out.println(e.getMessage());
+        }
+        catch (NumberFormatException e){
+            System.out.println("Price has to be a number");
+        }
+        finally {
+            minPriceInput = "0";
+        }
 
         // Maximum price
         System.out.println("Enter the maximum price: ");
         String maxPrice = input.nextLine();
+        try{
+            Double maxPriceInput = Double.parseDouble(maxPrice);
+            if (maxPriceInput < 0){
+                throw new giftSuggestionException("Price cannot be negative");
+            }
+        }
+        catch (giftSuggestionException e){
+            System.out.println(e.getMessage());
+        }
+        catch (NumberFormatException e){
+            System.out.println("Price has to be a number");
+        }
+        finally {
+            maxPrice = "10";
+        }
 
-        if (Integer.parseInt(age) == 0 && type.equals("") && Integer.parseInt(minPrice) == 0 && Integer.parseInt(maxPrice) == 0){
-            System.out.println("You have to fill at least 2 fields");
+        if (ageInput.isEmpty() && type.isEmpty() && minPriceInput.isEmpty() && maxPrice.isEmpty()){
+            System.out.println("You have to fill at least one field");
         }
         else {
-            giftSuggestion[0] = age;
+            giftSuggestion[0] = ageInput;
             giftSuggestion[1] = type;
-            giftSuggestion[2] = minPrice;
+            giftSuggestion[2] = minPriceInput;
             giftSuggestion[3] = maxPrice;
         }
 

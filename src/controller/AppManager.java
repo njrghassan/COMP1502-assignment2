@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import exceptions.giftSuggestionException;
+import exceptions.menusInputsExceptions;
 // Importing the view and model classes
 import view.AppMenu;
 import model.*;
@@ -21,9 +23,9 @@ public class AppManager {
 
     /**
      * This is the main method of the application
-     * @throws IOException
+     * @throws menusInputsExceptions
      */
-    public void run() throws IOException {
+    public void run() throws menusInputsExceptions {
         toys = new ArrayList<Toys>();
         loadFiles();
         displayMenuMethod();
@@ -32,12 +34,25 @@ public class AppManager {
     /**
      * The Main Menu method
      * This method displays the main menu and handles the user's input
-     * @throws IOException
+     * @throws menusInputsExceptions
      */
-    public void displayMenuMethod() throws IOException{
+    public void displayMenuMethod() throws menusInputsExceptions{
         menu.displayMenu();
         Scanner input = new Scanner(System.in);
         int option = input.nextInt();
+
+        if (option < 1 || option > 5){
+            try{
+                throw new menusInputsExceptions("Invalid option. Please try again.");
+            }
+            catch (menusInputsExceptions e){
+                System.out.println(e.getMessage());
+            }
+            finally{
+                input.close();
+                displayMenuMethod();
+            }
+        }
 
         switch (option){
             case 1:
@@ -50,7 +65,11 @@ public class AppManager {
                 //removeToy();
                 break;
             case 4:
-                giftSuggestion();
+                try {
+                    giftSuggestion();
+                } catch (giftSuggestionException e) {
+                    e.printStackTrace();
+                }
                 break;
             case 5:
                 save();
@@ -67,12 +86,25 @@ public class AppManager {
     /**
      * The Search Menu method
      * This method handles the search inventory option
-     * @throws IOException
+     * @throws menusInputsExceptions
      */
-    public void searchInventory() throws IOException{
+    public void searchInventory() throws menusInputsExceptions{
         menu.displaySearchMenu();
         Scanner input = new Scanner(System.in);
         int option = input.nextInt();
+
+        if (option < 1 || option > 4){
+            try{
+                throw new menusInputsExceptions("Invalid option. Please try again.");
+            }
+            catch (menusInputsExceptions e){
+                System.out.println(e.getMessage());
+            }
+            finally{
+                input.close();
+                searchInventory();
+            }
+        }
 
         switch (option){
             case 1:
@@ -99,9 +131,9 @@ public class AppManager {
      * This method handles the search by serial number option
      * It prompts the user to enter a serial number and then searches the inventory for the toy with that serial number
      * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
-     * @throws IOException
+     * @throws menusInputsExceptions
      */
-    public void searchBySerialNumber() throws IOException{
+    public void searchBySerialNumber() throws menusInputsExceptions{
         String serialNumber = menu.promoteSerialNumberInput(); // Prompts the user to enter a serial number
         ArrayList<Toys> foundToys = new ArrayList<Toys>(); // This will store the found toys
 
@@ -112,16 +144,20 @@ public class AppManager {
             }
         }
 
-        searchProsses(foundToys);
+        try {
+            searchProsses(foundToys);
+        } catch (menusInputsExceptions e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * This method handles the search by toy name option
      * It prompts the user to enter a toy name and then searches the inventory for the toy with that name
      * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
-     * @throws IOException
+     * @throws menusInputsExceptions
      */
-    public void searchByToyName() throws IOException{
+    public void searchByToyName() throws menusInputsExceptions{
         String toyName = menu.promoteToyNameInput(); // Prompts the user to enter a toy name
         ArrayList<Toys> foundToys = new ArrayList<Toys>(); // This will store the found toys
 
@@ -132,10 +168,20 @@ public class AppManager {
             }
         }
 
-        searchProsses(foundToys);
+        try {
+            searchProsses(foundToys);
+        } catch (menusInputsExceptions e) {
+            e.printStackTrace();
+        }
     }
 
-    public void searchByToyType() throws IOException{
+    /**
+     * This method handles the search by toy type option
+     * It prompts the user to enter a toy type and then searches the inventory for the toy with that type
+     * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
+     * @throws menusInputsExceptions
+     */
+    public void searchByToyType() throws menusInputsExceptions{
         String toyType = menu.promoteToyTypeInput(); // Prompts the user to enter a toy type
         ArrayList<Toys> foundToys = new ArrayList<Toys>(); // This will store the found toys
 
@@ -146,10 +192,21 @@ public class AppManager {
             }
         }
 
-        searchProsses(foundToys);
+        try {
+            searchProsses(foundToys);
+        } catch (menusInputsExceptions e) {
+            e.printStackTrace();
+        }
     }
 
-    public void giftSuggestion() throws IOException{
+    /**
+     * This method handles the gift suggestion option
+     * It prompts the user to enter the age, toy type, minimum price, and maximum price
+     * It then searches the inventory for the toys that match the user's input
+     * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
+     * @throws giftSuggestionException
+     */
+    public void giftSuggestion() throws giftSuggestionException{
         String[] userInput = menu.displayGiftSuggestion();
 
         // Get the user's input
@@ -158,17 +215,31 @@ public class AppManager {
         String minPrice = userInput[2];
         String maxPrice = userInput[3];
 
+        // Validate toy type input and search the inventory for the toys that match the user's input
+        if (!toyType.contains("figures") && !toyType.contains("animals") && !toyType.contains("puzzles") && !toyType.contains("boardgames")){
+            toyType = "";
+            try{
+                throw new giftSuggestionException("Cannot find the specified toy type that you entered.");
+            }
+            catch (giftSuggestionException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        
 
         // Search the inventory for the toys that match the user's input
         ArrayList<Toys> foundToys = new ArrayList<Toys>();
         for (Toys toy : toys){
-            if (toy.getAgeAppropriate() <= Integer.parseInt(age) && toy.getClass().getSimpleName().toLowerCase().contains(toyType) && toy.getPrice() >= Double.parseDouble(minPrice) && toy.getPrice() <= Double.parseDouble(maxPrice)){
+            if (toy.getAgeAppropriate() <= Integer.parseInt(age) && toy.getPrice() >= Double.parseDouble(minPrice) && toy.getPrice() <= Double.parseDouble(maxPrice) && toy.getClass().getSimpleName().toLowerCase().contains(toyType)){
                 foundToys.add(toy);
-                System.out.println(toy.getName() + " " + toy.getPrice() + " " + toy.getAgeAppropriate() + " " + toy.getClass().getSimpleName());
             }
         }
 
-        searchProsses(foundToys);
+        try {
+            searchProsses(foundToys);
+        } catch (menusInputsExceptions e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -177,7 +248,7 @@ public class AppManager {
      * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
      * @throws IOException
      */
-    public void searchProsses(ArrayList<Toys> foundToys) throws IOException{
+    public void searchProsses(ArrayList<Toys> foundToys) throws menusInputsExceptions{
         // If the toy is found, prompt the user to purchase it and then update the toy's available count
         String purchsed = menu.searchResultPrompt(foundToys);
         if (purchsed != null){

@@ -13,6 +13,7 @@
 5. Search by serial number function
 6. Search by name
 7. Search by category
+8. Gift suggestions
 
 ## Akram Altabba
 1. N/A
