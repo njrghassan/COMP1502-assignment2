@@ -6,6 +6,12 @@ import java.util.Scanner;
 import exceptions.giftSuggestionException;
 import model.Toys;
 
+/*
+ * This class is responsible for displaying the menu and prompting the user for input
+ * @Author: Ghassan, Akram, and Mohamed
+ * @Version: 1.0
+ * @Date: 2024, March 10
+ */
 public class AppMenu {
 
     // This is the scanner object

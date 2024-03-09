@@ -1,18 +1,25 @@
 package controller;
 
 // Importing the io packages and util packages
-import java.io.IOException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Importing the exceptions package
+import java.io.FileNotFoundException;
 import exceptions.giftSuggestionException;
+
 // Importing the view and model classes
 import view.AppMenu;
 import model.*;
 
+/*
+ * This class is responsible for managing the application
+ * @Author: Ghassan, Akram, and Mohamed
+ * @Version: 1.0
+ * @Date: 2024, March 10
+ */
 public class AppManager {
 
     // This is the menu object
@@ -90,7 +97,8 @@ public class AppManager {
                 displayMenuMethod();
                 break;
             default:
-                System.out.println("Invalid option");
+                System.out.println("Invalid option. Please try again.");
+                searchInventory();
                 break;
         }
 
@@ -197,7 +205,6 @@ public class AppManager {
      * This method handles the search by toy type option
      * It prompts the user to enter a toy type and then searches the inventory for the toy with that type
      * If the toy is found, it prompts the user to purchase it and then updates the toy's available count
-     * @throws IOException
      */
     public void searchProsses(ArrayList<Toys> foundToys){
         // If the toy is found, prompt the user to purchase it and then update the toy's available count
