@@ -19,7 +19,7 @@ public abstract class Toys {
 	 * @param avaiableCount
 	 * @param ageAppropriate
 	 */
-    public Toys(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate){
+    public Toys(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate) throws NegativePriceException {
         this.SN = SN;
 		this.name = name;
 		this.brand = brand;

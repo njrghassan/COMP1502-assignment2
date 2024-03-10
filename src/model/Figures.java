@@ -4,7 +4,7 @@ public class Figures extends Toys{
 
     private String classification;
 
-    public Figures(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, String classification) {
+    public Figures(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, String classification) throws NegativePriceException {
         super(SN, name, brand, price, avaiableCount, ageAppropriate);
         this.classification = classification;
     }

@@ -4,7 +4,7 @@ public class Puzzles extends Toys{
 
 	private char type;
 	
-	public Puzzles(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, char type) {
+	public Puzzles(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, char type) throws NegativePriceException {
 		super(SN, name, brand, price, avaiableCount, ageAppropriate);
 		this.type = type;
 	}

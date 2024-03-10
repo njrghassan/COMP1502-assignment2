@@ -5,7 +5,7 @@ public class BoardGames extends Toys{
 	private int minPlayers, maxPlayers;
 	private String[] designers;
 	
-	public BoardGames(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, int minPlayers, int maxPlayers, String[] designers) {
+	public BoardGames(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, int minPlayers, int maxPlayers, String[] designers) throws NegativePriceException {
 		super(SN, name, brand, price, avaiableCount, ageAppropriate);
 		this.minPlayers = minPlayers;
 		this.maxPlayers = maxPlayers;
