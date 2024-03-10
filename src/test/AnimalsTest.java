@@ -1,3 +1,5 @@
+package test;
+
 import model.Animals;
 import exceptions.NegativePriceException;
 import org.junit.jupiter.api.Test;
