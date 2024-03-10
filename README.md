@@ -19,7 +19,8 @@
 1. N/A
 
 ## Abdulrahman Muhammad
-1. N/A
+1. Negative Exceptions
+2. Maximum Exceptions
 
 
 
