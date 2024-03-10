@@ -20,7 +20,8 @@
 
 ## Abdulrahman Muhammad
 1. Negative Exceptions
-2. Maximum Exceptions
+2. Maximum Exceptions (Removed)
+3. Test files; AnimalsTest, BoardGamesTest, FiguresTest, PuzzlesTest, ToysTest
 
 
 
