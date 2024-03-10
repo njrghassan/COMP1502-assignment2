@@ -63,6 +63,20 @@ public class AppManager {
                 }
                 break;
             case 5:
+            try {
+                MaximumPrice();
+            } catch (MaximumPriceException e) {
+                e.printStackTrace();
+            }
+            break;
+            case 6:
+            try {
+                NegativePrice();
+            } catch (NegativePriceException e) {
+                e.printStackTrace();
+            }
+            break;
+            case 7:
                 save();
                 System.exit(0);
             default:
