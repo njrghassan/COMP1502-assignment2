@@ -23,7 +23,7 @@
 2. Maximum Exceptions (Removed)
 3. Tested Exceptions
 4. Classes for test files.
-5. Test files; AnimalsTest, BoardGamesTest, FiguresTest, PuzzlesTest, ToysTest.
+5. Test files; AnimalsTest, BoardGamesTest, FiguresTest, PuzzlesTest.
 6. Slight Tweaks to AppManager.
 
 
