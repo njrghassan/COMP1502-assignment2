@@ -5,7 +5,7 @@ public class Animals extends Toys{
     private String material;
     private char size;
 
-    public Animals(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, String material, char size) {
+    public Animals(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, String material, char size) throws NegativePriceException {
         super(SN, name, brand, price, avaiableCount, ageAppropriate);
         this.material = material;
         this.size = size;
