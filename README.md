@@ -21,7 +21,9 @@
 ## Abdulrahman Muhammad
 1. Negative Exceptions
 2. Maximum Exceptions (Removed)
-3. Test files; AnimalsTest, BoardGamesTest, FiguresTest, PuzzlesTest, ToysTest
+3. Testing Exceptions
+4. Test files; AnimalsTest, BoardGamesTest, FiguresTest, PuzzlesTest, ToysTest
+5. Slight Tweaks to AppManager.
 
 
 
