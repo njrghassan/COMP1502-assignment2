@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.BufferedWriter;
 // Importing the io packages and util packages
 import java.io.File;
 import java.io.PrintWriter;
@@ -8,6 +9,8 @@ import java.util.Scanner;
 
 // Importing the exceptions package
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import exceptions.giftSuggestionException;
 import exceptions.NegativePriceException;
 
@@ -169,6 +172,42 @@ public class AppManager {
 
         searchProsses(foundToys);
     }
+
+    public static void removeToy(String removeItem) {
+        File inputFile = new File("res/toys.txt");
+
+        try(Scanner fw = new Scanner(inputFile)){
+            BufferedWriter writer = new BufferedWriter(new Filewriter("res/toys.tmp"));
+
+            boolean found = false;
+
+            while (scanner.hasNextLine()){
+                String data = scanner.nextLine();
+                String[] toyData = data.split(";");
+
+                if (toyData[0].trim().equalsIgnoreCase(removeItem.trim())){
+                    found = true;
+                }
+                else{
+                    writer.write(data);
+                    writer.newLine();
+                }
+            }
+            if (found){
+                System.out.println("Toy with serial number " + removeItem + "has been removed");
+            }
+            else{
+                System.out.println("Toy with serial number " + removeItem + " does not exist");
+            }
+            catch(IOException e ){
+                e.printStackTrace();
+            }
+            inputFile.delete();
+
+            new File("res/toys.tmp");
+        }
+    }
+ }
 
     /**
      * This method handles the gift suggestion option
@@ -364,7 +403,7 @@ public class AppManager {
                 }
             }
         }
-
+        
         System.out.println("******* THANKS FOR VISITTING US *******");
     }
 }
