@@ -4,7 +4,7 @@ import controller.AppManager;
 
 /*
  * This class is responsible for starting the application
- * @Author: Ghassan, Akram, and Mohamed
+ * @Author: Ghassan, Akram, and Abdul Rahman
  * @Version: 1.0
  * @Date: 2024, March 10
  */
