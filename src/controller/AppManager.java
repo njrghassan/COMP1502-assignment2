@@ -13,7 +13,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import exceptions.giftSuggestionException;
-import exceptions.negativePriceException;
 import exceptions.NegativePriceException;
 
 // Importing the view and model classes
@@ -69,6 +68,13 @@ public class AppManager {
                 }
                 break;
             case 5:
+            try {
+                NegativePrice();
+            } catch (NegativePriceException e) {
+                e.printStackTrace();
+            }
+            break;
+            case 6:
                 save();
                 System.exit(0);
             default:
@@ -168,49 +174,16 @@ public class AppManager {
         searchProsses(foundToys);
     }
 
-    public static void addNewToy() {
+    public static void removeToy(String removeItem) {
         File inputFile = new File("res/toys.txt");
-        Toys addToy = menu.addNewToy();
-        try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
-           writer.write(toyToString(addToy));
-           writer.newLine();
-           System.out.println("added new toy");
-        } 
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-        private static String toyToString(Toys toy){
-        StringBuilder str_build = new StringBuilder();
-        str_build.append(toy.getSN()).append(";");
-        str_build.append(toy.getName()).append(";");
-        str_build.append(toy.getBrand()).append(";");
-        str_build.append(toy.getPrice()).append(";");
-        str_build.append(toy.getAvaiableCount()).append(";");
-        if (toy instanceof Animals) {
-            str_build.append(((Animals) toy).getMaterial()).append(";");
-            str_build.append(((Animals) toy).getSize());
-        }
-        for (int i = 0; i< designers.length; i++){
-            str_build.append(designers[i]);
-            if (i< designers.length - 1){
-                str_build.append(",");
-            }
-        }
-    }
-
-    public static void removeToy() {
-        File inputFile = new File("res/toys.txt");
-        String removeItem = menu.removeToy();
 
         try(Scanner fw = new Scanner(inputFile)){
-            BufferedWriter writer = new BufferedWriter(new FileWriter("res/toys.tmp"));
+            BufferedWriter writer = new BufferedWriter(new Filewriter("res/toys.tmp"));
 
             boolean found = false;
 
-            while (fw.hasNextLine()){
-                String data = fw.nextLine();
+            while (scanner.hasNextLine()){
+                String data = scanner.nextLine();
                 String[] toyData = data.split(";");
 
                 if (toyData[0].trim().equalsIgnoreCase(removeItem.trim())){
@@ -227,14 +200,59 @@ public class AppManager {
             else{
                 System.out.println("Toy with serial number " + removeItem + " does not exist");
             }
-        }
-        catch(IOException e ){
-            e.printStackTrace();
-        }
-        inputFile.delete();
+            catch(IOException e ){
+                e.printStackTrace();
+            }
+            inputFile.delete();
 
-        new File("res/toys.tmp");
+            new File("res/toys.tmp");
+        }
     }
+    public static void addNewToy(Toys addToy) {
+        File inputFile = new File("res/toys.txt");
+
+        try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
+           writer.write(toyToString(addToy));
+           writer.newLine();
+           System.out.println("added new toy");
+           catch(IOException e){
+            e.printStackTrace();
+           }
+    }
+    private String toyToString(Toys toy){
+        StringBuilder str_build = new StringBuilder();
+        str_build.append(toy.getSN()).append(";");
+        str_build.append(toy.getName()).append(";");
+        str_build.append(toy.getBrand()).append(";");
+        str_build.append(toy.getPrice()).append(";");
+        str_build.append(toy.getAvaiableCount()).append(";");
+        str_build.append(toy.getAgeAppropriate()).append(";");
+    
+        if (toy instanceof Animals){
+            str_build.append((Animals) toy).getMaterial().append(";");
+            str_build.append((Animals) toy).getSize();
+        }
+        else if (toy instanceof BoardGames){
+            str_build.append(((BoardGames) toy).getMinPlayers()).append("-").append(((BoardGames) toy).getMaxPlayers()).append(";");
+        }
+        else if (toy instanceof Figures){
+            str_build.append(((Figures) toy).getClassification());
+        }
+        else if (toy instanceof Puzzles){
+            str_build.append(((Puzzles) toy).getType());
+            
+        }
+        String[] designers = ((BoardGames) toy).getDesigners();
+        for (int i = 0; i< designers.length; i++){
+            str_build.append(designers[i]);
+            if (i< designers.length - 1){
+                str_build.append(",");
+                System.out.println("Anita Max Wynn");
+            }
+        }
+    }
+     
+
  
 
     /**
