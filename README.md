@@ -16,7 +16,12 @@
 8. Gift suggestions
 
 ## Akram Altabba
-1. N/A
+1. Created remove and add methods completed in AppManager and AppMenu.
+2. Created ToString methods
+3. Finished Load Files method
+4. Wrote AppMenu including all of the inputs (SN, Name, Brand, Price, Available, min/max, and designer names)
+5. Added all try and catch for methods
+6. Added Toy methods
 
 ## Abdulrahman Muhammad
 1. Negative Exceptions
