@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import exceptions.negativePriceException;
+import exceptions.NumberException;
 import model.Puzzles;
 
 class PuzzlesTest {
@@ -16,13 +16,13 @@ class PuzzlesTest {
     }
 
     @Test
-    void test2() throws negativePriceException {
+    void test2() throws NumberException {
         Puzzles p = new Puzzles("1987654321", "My Toy", "My Brand", -42.9, 3, 3, 'M');
 
         if (p.getPrice() < 0) {
             try {
-                throw new negativePriceException("Price cannot be negative");
-            } catch (negativePriceException e) {
+                throw new NumberException("Price cannot be negative");
+            } catch (NumberException e) {
                 System.out.println(e.getMessage());
             }
         } else {

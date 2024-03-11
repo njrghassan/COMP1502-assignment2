@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import exceptions.negativePriceException;
+import exceptions.NumberException;
 import model.Figures;
 
 class FiguresTest {
@@ -16,13 +16,13 @@ class FiguresTest {
     }
 
     @Test
-    void test2() throws negativePriceException {
+    void test2() throws NumberException {
         Figures f = new Figures("1112345678", "My Toy", "My Brand", -69.9, 3, 3, "Hello");
 
         if (f.getPrice() < 0) {
             try {
-                throw new negativePriceException("Price cannot be negative");
-            } catch (negativePriceException e) {
+                throw new NumberException("Price cannot be negative");
+            } catch (NumberException e) {
                 System.out.println(e.getMessage());
             }
         } else {

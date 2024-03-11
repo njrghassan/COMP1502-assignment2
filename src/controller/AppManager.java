@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import exceptions.giftSuggestionException;
-import exceptions.NegativePriceException;
+import exceptions.NumberException;
 
 // Importing the view and model classes
 import view.AppMenu;
@@ -58,7 +58,7 @@ public class AppManager {
                 addNewToy();
                 break;
             case 3:
-                removeToy();
+                //removeToy();
                 break;
             case 4:
                 try {
@@ -68,13 +68,6 @@ public class AppManager {
                 }
                 break;
             case 5:
-            try {
-                NegativePrice();
-            } catch (NegativePriceException e) {
-                e.printStackTrace();
-            }
-            break;
-            case 6:
                 save();
                 System.exit(0);
             default:
@@ -174,52 +167,21 @@ public class AppManager {
         searchProsses(foundToys);
     }
 
-    public static void removeToy(String removeItem) {
+    public void addNewToy() {
         File inputFile = new File("res/toys.txt");
-
-        try(Scanner fw = new Scanner(inputFile)){
-            BufferedWriter writer = new BufferedWriter(new Filewriter("res/toys.tmp"));
-
-            boolean found = false;
-
-            while (scanner.hasNextLine()){
-                String data = scanner.nextLine();
-                String[] toyData = data.split(";");
-
-                if (toyData[0].trim().equalsIgnoreCase(removeItem.trim())){
-                    found = true;
-                }
-                else{
-                    writer.write(data);
-                    writer.newLine();
-                }
-            }
-            if (found){
-                System.out.println("Toy with serial number " + removeItem + "has been removed");
-            }
-            else{
-                System.out.println("Toy with serial number " + removeItem + " does not exist");
-            }
-            catch(IOException e ){
-                e.printStackTrace();
-            }
-            inputFile.delete();
-
-            new File("res/toys.tmp");
-        }
-    }
-    public static void addNewToy() {
-        File inputFile = new File("res/toys.txt");
-        Toys addToy = menu.addNewToyPrompt;
+        Toys addToy = menu.addNewToyPrompt();
 
         try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
-           writer.write(toyToString(add));
+           writer.write(toyToString(addToy));
            writer.newLine();
            System.out.println("added new toy");
-           catch(IOException e){
+           
+        }
+        catch(IOException e){
             e.printStackTrace();
            }
     }
+
     private String toyToString(){
 
         StringBuilder str_build = new StringBuilder();
@@ -254,9 +216,24 @@ public class AppManager {
         }
     }
      
-
+    /*
+     * This method handles the remove toy option
+     * It prompts the user to enter the serial number of the toy to remove
+     * It then searches the inventory for the toy with that serial number and removes it
+     */
+    public void removeToy() {
+        String removeSN = menu.removeToyPrompt();
+        for (Toys toy : toys){
+            if (toy.getSN().equals(removeSN)){
+                toys.remove(toy);
+                System.out.println("The toy has been removed successfully!");
+                break;
+            }
+        }
+        displayMenuMethod();
+        
+    }
  
-
     /**
      * This method handles the gift suggestion option
      * It prompts the user to enter the age, toy type, minimum price, and maximum price
