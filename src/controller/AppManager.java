@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.BufferedWriter;
 // Importing the io packages and util packages
 import java.io.File;
 import java.io.PrintWriter;
@@ -9,11 +8,7 @@ import java.util.Scanner;
 
 // Importing the exceptions package
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import exceptions.giftSuggestionException;
-import exceptions.NumberException;
 
 // Importing the view and model classes
 import view.AppMenu;
@@ -168,52 +163,47 @@ public class AppManager {
     }
 
     public void addNewToy() {
-        File inputFile = new File("res/toys.txt");
-        Toys addToy = menu.addNewToyPrompt();
+        String[] addToy = menu.addNewToyPrompt();
 
-        try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
-           writer.write(toyToString(addToy));
-           writer.newLine();
-           System.out.println("added new toy");
-           
+        if (addToy[0] == "Figures"){
+            toys.add(new Figures(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), "Added"));
         }
-        catch(IOException e){
-            e.printStackTrace();
-           }
+        else if (addToy[0] == "Animals"){
+            toys.add(new Animals(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), "Added", 'A'));
+        }
+        else if (addToy[0] == "Puzzles"){
+            toys.add(new Puzzles(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), 'P'));
+        }
+        else if (addToy[0] == "BoardGames"){
+            int minPlayers = Integer.parseInt(addToy[7]);
+            int maxPlayers = Integer.parseInt(addToy[8]);
+            String[] designers;
+            if (addToy[9].contains(",")){
+                designers = addToy[9].split(",");
+            }
+            else{
+                // If there is only one designer
+                designers = new String[1];
+                designers[0] = addToy[9];
+            }
+            toys.add(new BoardGames(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), minPlayers, maxPlayers, designers));
+        }
+        else{
+            System.out.println("Invalid data in the file.");
+            System.exit(0);
+        }
+
+        save();
     }
 
-    private String toyToString(){
-
-        StringBuilder str_build = new StringBuilder();
-        str_build.append(toy.getSN()).append(";");
-        str_build.append(toy.getName()).append(";");
-        str_build.append(toy.getBrand()).append(";");
-        str_build.append(toy.getPrice()).append(";");
-        str_build.append(toy.getAvaiableCount()).append(";");
-        str_build.append(toy.getAgeAppropriate()).append(";");
-    
-        if (toy instanceof Animals){
-            str_build.append((Animals) toy).getMaterial().append(";");
-            str_build.append((Animals) toy).getSize();
+    public String toyToString(String[] addToy) {
+        String toy = "";
+        toy = addToy[0] + ";" + addToy[1] + ";" + addToy[2] + ";" + addToy[3] + ";" + addToy[4] + "-" + addToy[5];
+        if (addToy.length == 8) {
+            toy += addToy[6] + "-" + addToy[7] + ";" + addToy[8];
         }
-        else if (toy instanceof BoardGames){
-            str_build.append(((BoardGames) toy).getMinPlayers()).append("-").append(((BoardGames) toy).getMaxPlayers()).append(";");
-        }
-        else if (toy instanceof Figures){
-            str_build.append(((Figures) toy).getClassification());
-        }
-        else if (toy instanceof Puzzles){
-            str_build.append(((Puzzles) toy).getType());
-            
-        }
-        String[] designers = ((BoardGames) toy).getDesigners();
-        for (int i = 0; i< designers.length; i++){
-            str_build.append(designers[i]);
-            if (i< designers.length - 1){
-                str_build.append(",");
-                System.out.println("Anita Max Wynn");
-            }
-        }
+        
+        return toy;
     }
      
     /*
@@ -221,18 +211,18 @@ public class AppManager {
      * It prompts the user to enter the serial number of the toy to remove
      * It then searches the inventory for the toy with that serial number and removes it
      */
-    public void removeToy() {
-        String removeSN = menu.removeToyPrompt();
-        for (Toys toy : toys){
-            if (toy.getSN().equals(removeSN)){
-                toys.remove(toy);
-                System.out.println("The toy has been removed successfully!");
-                break;
-            }
-        }
-        displayMenuMethod();
+    // public void removeToy() {
+    //     String removeSN = menu.removeToyPrompt();
+    //     for (Toys toy : toys){
+    //         if (toy.getSN().equals(removeSN)){
+    //             toys.remove(toy);
+    //             System.out.println("The toy has been removed successfully!");
+    //             break;
+    //         }
+    //     }
+    //     displayMenuMethod();
         
-    }
+    // }
  
     /**
      * This method handles the gift suggestion option
