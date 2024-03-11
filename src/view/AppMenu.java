@@ -100,8 +100,8 @@ public class AppMenu {
         
         return SNNumber;
     }
-    public void addNewToyPrompt(){
-        String[] userentry;
+    public String[] addNewToyPrompt(){
+        String[] userentry = new String[8];
         System.out.println("Please enter serial number: ");
         String serialInput = input.nextLine();
         String toyType = "";
@@ -131,6 +131,8 @@ public class AppMenu {
         finally{
             input.close();
         }
+        System.out.println("Enter Toy Name: ");
+        String toyNameInput = input.nextLine();
         System.out.println("Enter Toy Brand: ");
         String toyBrandInput = input.nextLine();
         
@@ -191,6 +193,61 @@ public class AppMenu {
             ageInput = "0";
             input.close();
         }
+        System.out.println("Enter Minimum Number of Players: ");
+        String minimumInput = input.nextLine();
+        int minimum;
+        try{
+            minimum = Integer.parseInt(minimumInput);
+            if (minimum<0){
+                throw new NumberException("minimum cannot be negative");
+            }
+        }
+        catch (NumberException e){
+            System.out.println(e.getMessage());
+        }
+        catch(NumberFormatException e){
+            System.out.println("minimum must be a number");
+        }
+        finally{
+            minimumInput = "0";
+            input.close();
+        }
+        System.out.println("Enter Minimum Number of Players: ");
+        String maximumInput = input.nextLine();
+        int maximum;
+        try{
+            maximum = Integer.parseInt(maximumInput);
+            if (maximum <0){
+                throw new NumberException("Maximum cannot be negative");
+            }
+            else if (Integer.parseInt(minimumInput)>=maximum){
+                throw new NumberException("Minimum cannot be greater than Maximum");
+            }
+                
+        }   
+        catch (NumberException e){
+            System.out.println(e.getMessage());
+        }
+        catch(NumberFormatException e){
+            System.out.println("maximum must be a number");
+        }
+        finally{
+            maximumInput = "0";
+            input.close();
+        }
+        System.out.println("Enter Designer Names(Use ',' to seperate the names if more than one name): ");
+        String desginerInput = input.nextLine();
+        userentry[0] = serialInput;
+        userentry[1] = toyNameInput;
+        userentry[2] = toyBrandInput;
+        userentry[3] = toyPriceInput;
+        userentry[4] = availableToysInput;
+        userentry[5] = ageInput;
+        userentry[6] = minimumInput;
+        userentry[7] = maximumInput;
+        userentry[8] = desginerInput;
+
+        return userentry;
     }
 
     /**
