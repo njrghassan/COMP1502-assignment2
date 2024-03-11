@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 // Importing the exceptions package
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import exceptions.giftSuggestionException;
@@ -54,10 +55,10 @@ public class AppManager {
                 searchInventory();
                 break;
             case 2:
-                //addNewToy();
+                addNewToy();
                 break;
             case 3:
-                //removeToy();
+                removeToy();
                 break;
             case 4:
                 try {
@@ -174,8 +175,8 @@ public class AppManager {
 
             boolean found = false;
 
-            while (scanner.hasNextLine()){
-                String data = scanner.nextLine();
+            while (fw.hasNextLine()){
+                String data = fw.nextLine();
                 String[] toyData = data.split(";");
 
                 if (toyData[0].trim().equalsIgnoreCase(removeItem.trim())){
@@ -200,7 +201,38 @@ public class AppManager {
             new File("res/toys.tmp");
         }
     }
- }
+    public static void addNewToy(Toys addToy) {
+            File inputFile = new File("res/toys.txt");
+
+            try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
+               writer.write(toyToString(addToy));
+               writer.newLine();
+               System.out.println("added new toy");
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        private static String toyToString(Toys toy){
+        StringBuilder str_build = new StringBuilder();
+        str_build.append(toy.getSN()).append(";");
+        str_build.append(toy.getName()).append(";");
+        str_build.append(toy.getBrand()).append(";");
+        str_build.append(toy.getPrice()).append(";");
+        str_build.append(toy.getAvaiableCount()).append(";");
+        if (toy instanceof Animals) {
+            str_build.append(((Animals) toy).getMaterial()).append(";");
+            str_build.append(((Animals) toy).getSize());
+        }
+        for (int i = 0; i< designers.length; i++){
+            str_build.append(designers[i]);
+            if (i< designers.length - 1){
+                str_build.append(",");
+            }
+        }
+    }
+
+ 
 
     /**
      * This method handles the gift suggestion option
