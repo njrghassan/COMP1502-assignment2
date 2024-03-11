@@ -208,18 +208,20 @@ public class AppManager {
             new File("res/toys.tmp");
         }
     }
-    public static void addNewToy(Toys addToy) {
+    public static void addNewToy() {
         File inputFile = new File("res/toys.txt");
+        Toys addToy = menu.addNewToyPrompt;
 
         try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
-           writer.write(toyToString(addToy));
+           writer.write(toyToString(add));
            writer.newLine();
            System.out.println("added new toy");
            catch(IOException e){
             e.printStackTrace();
            }
     }
-    private String toyToString(Toys toy){
+    private String toyToString(){
+
         StringBuilder str_build = new StringBuilder();
         str_build.append(toy.getSN()).append(";");
         str_build.append(toy.getName()).append(";");

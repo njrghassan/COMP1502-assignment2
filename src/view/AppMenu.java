@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import exceptions.NumberException;
 import exceptions.giftSuggestionException;
 import model.Toys;
 
@@ -98,6 +99,98 @@ public class AppMenu {
         }
         
         return SNNumber;
+    }
+    public void addNewToyPrompt(){
+        String[] userentry;
+        System.out.println("Please enter serial number: ");
+        String serialInput = input.nextLine();
+        String toyType = "";
+        try{
+            if (serialInput.charAt(0) == '0' || serialInput.charAt(0) == '1'){
+                toyType = "Figures";
+            }
+            else if (serialInput.charAt(0) == '2' || serialInput.charAt(0) == '3'){
+                toyType = "Animals";
+            }
+            else if (serialInput.charAt(0) == '4' || serialInput.charAt(0) == '5' || serialInput.charAt(0) == '6'){
+
+                toyType = "Puzzles";
+            }
+            else if (serialInput.charAt(0) == '7' || serialInput.charAt(0) == '8' || serialInput.charAt(0) == '9'){
+
+                toyType = "BoardGames";
+            }
+            else{
+                throw new NumberException("Invalid serial number");
+            }
+
+        }
+        catch (NumberException e){
+            System.out.println(e.getMessage());
+        }
+        finally{
+            input.close();
+        }
+        System.out.println("Enter Toy Brand: ");
+        String toyBrandInput = input.nextLine();
+        
+        System.out.println("Enter Toy Price: ");
+        String toyPriceInput = input.nextLine();
+        double toyPrice;
+        try{
+            toyPrice = Double.parseDouble(toyPriceInput);
+            if (toyPrice < 0 ){
+                throw new NumberException("Price cannot be negative! ");
+            }
+        }
+        catch (NumberException e){
+            System.out.println(e.getMessage());
+        }
+        catch (NumberFormatException e){
+            System.out.println("Price has to be a number");
+        }
+        finally{
+            toyPriceInput = "0";
+            input.close();
+        }
+        System.out.println("Enter Available counts: ");
+        String availableToysInput = input.nextLine();
+        int availableToys;
+        try{
+            availableToys = Integer.parseInt(availableToysInput);
+            if (availableToys < 0){
+                throw new NumberException("Available count cannot be negative");
+            }
+        }
+        catch (NumberException e){
+            System.out.println(e.getMessage());
+        }
+        catch (NumberFormatException e){
+            System.out.println("Available toys must be a number");
+        }
+        finally{
+            availableToysInput = "0";
+            input.close();
+        }
+        System.out.println("Enter appropriate age: ");
+        String ageInput = input.nextLine();
+        int age;
+        try{
+            age = Integer.parseInt(ageInput);
+            if (age<0){
+                throw new NumberException("Age cannot be negative");
+            }
+        }
+        catch (NumberException e){
+            System.out.println(e.getMessage());
+        }
+        catch(NumberFormatException e){
+            System.out.println("Age must be a number");
+        }
+        finally{
+            ageInput = "0";
+            input.close();
+        }
     }
 
     /**
