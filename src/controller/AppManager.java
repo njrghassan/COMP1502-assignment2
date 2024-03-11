@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 // Importing the exceptions package
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import exceptions.giftSuggestionException;
@@ -54,10 +55,10 @@ public class AppManager {
                 searchInventory();
                 break;
             case 2:
-                //addNewToy();
+                addNewToy();
                 break;
             case 3:
-                //removeToy();
+                removeToy();
                 break;
             case 4:
                 try {
@@ -207,7 +208,49 @@ public class AppManager {
             new File("res/toys.tmp");
         }
     }
- }
+    public static void addNewToy(Toys addToy) {
+        File inputFile = new File("res/toys.txt");
+
+        try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
+           writer.write(toyToString(addToy));
+           writer.newLine();
+           System.out.println("added new toy");
+           catch(IOException e){
+            e.printStackTrace();
+           }
+    }
+    private String toyToString(Toys toy){
+        StringBuilder str_build = new StringBuilder();
+        str_build.append(toy.getSN()).append(";");
+        str_build.append(toy.getName()).append(";");
+        str_build.append(toy.getBrand()).append(";");
+        str_build.append(toy.getPrice()).append(";");
+        str_build.append(toy.getAvaiableCount()).append(";");
+        str_build.append(toy.getAgeAppropriate()).append(";");
+    
+        if (toy instanceof Animals){
+            str_build.append((Animals) toy).getMaterial().append(";");
+            str_build.append((Animals) toy).getSize();
+        }
+        else if (toy instanceof BoardGames){
+            str_build.append(((BoardGames) toy).getMinPlayers()).append("-").append(((BoardGames) toy).getMaxPlayers()).append(";");
+        }
+        else if (toy instanceof Figures){
+            str_build.append(((Figures) toy).getClassification());
+        }
+        else if (toy instanceof Puzzles){
+            str_build.append(((Puzzles) toy).getType());
+        }
+        String[] designers = ((BoardGames) toy).getDesigners();
+        for (int i = 0; i< designers.length; i++){
+            str_build.append(designers[i]);
+            if (i< designers.length - 1){
+                str_build.append(",");
+            }
+        }
+    }
+
+ 
 
     /**
      * This method handles the gift suggestion option
