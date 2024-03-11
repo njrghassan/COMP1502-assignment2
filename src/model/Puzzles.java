@@ -1,12 +1,11 @@
 package model;
 
-import exceptions.negativePriceException;
 
 public class Puzzles extends Toys{
 
 	private char type;
 	
-	public Puzzles(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, char type) throws negativePriceException {
+	public Puzzles(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, char type) {
 		super(SN, name, brand, price, avaiableCount, ageAppropriate);
 		this.type = type;
 	}

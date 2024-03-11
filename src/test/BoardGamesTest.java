@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardGamesTest {
 	private String[] desginers;
     @Test
-    void test1() throws negativePriceException {
+    void test1() {
         BoardGames boardGame = new BoardGames("11123456789","My Toy","My Brand",12.9,3,3,2, 3, desginers);
         assertEquals("11123456789", boardGame.getSN());
     }

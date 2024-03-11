@@ -12,7 +12,7 @@ class AnimalsTest {
     Animals animal;
 
     @Test
-    void test1() throws negativePriceException{
+    void test1(){
         animal = new Animals("1234567890","My Toy","My Brand",42.3,3,3,"Wooden", 'L');
         assertEquals("1234567890", animal.getSN());
     }

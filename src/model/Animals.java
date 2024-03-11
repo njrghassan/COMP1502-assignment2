@@ -1,13 +1,11 @@
 package model;
 
-import exceptions.negativePriceException;
-
 public class Animals extends Toys{
 
     private String material;
     private char size;
 
-    public Animals(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, String material, char size) throws negativePriceException {
+    public Animals(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate, String material, char size){
         super(SN, name, brand, price, avaiableCount, ageAppropriate);
         this.material = material;
         this.size = size;

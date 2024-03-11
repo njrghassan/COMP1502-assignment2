@@ -10,7 +10,7 @@ import model.Puzzles;
 class PuzzlesTest {
 
     @Test
-    void test1() throws negativePriceException {
+    void test1() {
         Puzzles p = new Puzzles("1987654321", "My Toy", "My Brand", 42.9, 3, 3, 'M');
         assertEquals("1987654321", p.getSN());
     }

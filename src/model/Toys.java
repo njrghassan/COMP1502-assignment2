@@ -1,7 +1,5 @@
 package model;
 
-import exceptions.negativePriceException;
-
 public abstract class Toys {
 
     private String SN;
@@ -21,7 +19,7 @@ public abstract class Toys {
 	 * @param avaiableCount
 	 * @param ageAppropriate
 	 */
-    public Toys(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate) throws negativePriceException {
+    public Toys(String SN, String name, String brand, double price, int avaiableCount, int ageAppropriate) {
         this.SN = SN;
 		this.name = name;
 		this.brand = brand;
