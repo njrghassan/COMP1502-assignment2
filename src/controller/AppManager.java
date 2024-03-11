@@ -9,6 +9,7 @@ import java.util.Scanner;
 // Importing the exceptions package
 import java.io.FileNotFoundException;
 import exceptions.giftSuggestionException;
+import exceptions.NumberException;
 
 // Importing the view and model classes
 import view.AppMenu;

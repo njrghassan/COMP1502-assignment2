@@ -1,7 +1,7 @@
 package test;
 
 import model.Animals;
-import exceptions.negativePriceException;
+import exceptions.NumberException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,13 +22,13 @@ class AnimalsTest {
  * The try & catch will display the NegativePriceException message, should the test fail.
  */
     @Test
-    void test2() throws negativePriceException {
+    void test2() throws NumberException {
         animal = new Animals("1234567890","My Toy","My Brand",-42.3,3,3,"Wooden", 'L');
 
         if (animal.getPrice() < 0) {
             try {
-                throw new negativePriceException("Price cannot be negative");
-            } catch (negativePriceException e) {
+                throw new NumberException("Price cannot be negative");
+            } catch (NumberException e) {
                 System.out.println(e.getMessage());
             }
         }
