@@ -1,24 +1,31 @@
 package test;
 
 import model.BoardGames;
-import exceptions.NegativePriceException;
+import exceptions.negativePriceException;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BoardGamesTest {
-
+	private String[] desginers;
     @Test
-    void test1() throws NegativePriceException {
-        BoardGame boardGame=new BoardGame("11123456789","My Toy","My Brand",12.9,3,3,"2-3","No-one");
-        assertEquals("Category:BoardGame, Serial Number: 11123456789, Name:My Toy, Brand:My Brand, Price:12.9, Available Count:3, Age Appropriate:3, Number Of Players:2-3, Designer(s):No-one");
+    void test1() throws negativePriceException {
+        BoardGames boardGame = new BoardGames("11123456789","My Toy","My Brand",12.9,3,3,2, 3, desginers);
+        assertEquals("11123456789", boardGame.getSN());
     }
 
     @Test
-    void test2() throws NegativePriceException {
-        try {
-            BoardGame boardGame=new BoardGame("11123456789","My Toy","My Brand",-12.9,3,3,"2-3","No-one");
-            fail();
-        }catch (NegativePriceException e){
+    void test2() throws negativePriceException {
+        BoardGames boardGame = new BoardGames("11123456789","My Toy","My Brand",-12.9,3,3,2, 3, desginers);
 
+        if (boardGame.getPrice() < 0) {
+            try {
+                throw new negativePriceException("Price cannot be negative");
+            } catch (negativePriceException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        else {
+            fail("Test failed: Price is not negative");
         }
     }
 

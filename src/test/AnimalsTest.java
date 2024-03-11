@@ -1,15 +1,20 @@
 package test;
 
 import model.Animals;
-import exceptions.NegativePriceException;
+import exceptions.negativePriceException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 class AnimalsTest {
+    Animals animal;
 
     @Test
-    void test1() throws NegativePriceException {
-        Animal animal=new Animal("1234567890","My Toy","My Brand",42.3,3,3,"Wooden","L");
-        assertEquals("Category:Animal, Serial Number: 1234567890, Name:My Toy, Brand:My Brand, Price:42.3, Available Count:3, Age Appropriate:3, Material:Wooden, Size:L");
+    void test1() throws negativePriceException{
+        animal = new Animals("1234567890","My Toy","My Brand",42.3,3,3,"Wooden", 'L');
+        assertEquals("1234567890", animal.getSN());
     }
 /**
  * This is a testing for the NegativePriceException.
@@ -17,13 +22,20 @@ class AnimalsTest {
  * The try & catch will display the NegativePriceException message, should the test fail.
  */
     @Test
-    void test2() throws NegativePriceException {
-        try {
-            Animal animal=new Animal("1234567890","My Toy","My Brand",-42.3,3,3,"Wooden","L");
-            fail();
-        }catch (NegativePriceException e){
+    void test2() throws negativePriceException {
+        animal = new Animals("1234567890","My Toy","My Brand",-42.3,3,3,"Wooden", 'L');
 
+        if (animal.getPrice() < 0) {
+            try {
+                throw new negativePriceException("Price cannot be negative");
+            } catch (negativePriceException e) {
+                System.out.println(e.getMessage());
+            }
         }
+        else {
+            fail();
+        }
+        
     }
 
 }

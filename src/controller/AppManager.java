@@ -67,13 +67,6 @@ public class AppManager {
                 }
                 break;
             case 5:
-            try {
-                NegativePrice();
-            } catch (NegativePriceException e) {
-                e.printStackTrace();
-            }
-            break;
-            case 6:
                 save();
                 System.exit(0);
             default:

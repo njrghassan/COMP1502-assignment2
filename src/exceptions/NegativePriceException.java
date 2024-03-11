@@ -1,8 +1,8 @@
 package exceptions;
 
-public class NegativePriceException extends Exception{
+public class negativePriceException extends Exception{
 
-    public NegativePriceException(String message) {
+    public negativePriceException(String message) {
         super("Price can not be negative.");
     }
 }

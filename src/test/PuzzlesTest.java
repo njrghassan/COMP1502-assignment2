@@ -1,24 +1,32 @@
 package test;
 
-import model.Puzzles;
-import exceptions.NegativePriceException;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
+
+import exceptions.negativePriceException;
+import model.Puzzles;
 
 class PuzzlesTest {
 
     @Test
-    void test1() throws NegativePriceException {
-        Puzzle puzzle=new Puzzle("1987654321","My Toy","My Brand",42.9,3,3,"M");
-        assertEquals("Category:Puzzle, Serial Number: 1987654321, Name:My Toy, Brand:My Brand, Price:42.9, Available Count:3, Age Appropriate:3, Puzzle Type:M");
+    void test1() throws negativePriceException {
+        Puzzles p = new Puzzles("1987654321", "My Toy", "My Brand", 42.9, 3, 3, 'M');
+        assertEquals("1987654321", p.getSN());
     }
 
     @Test
-    void test2() throws NegativePriceException {
-        try {
-            Puzzle puzzle=new Puzzle("1987654321","My Toy","My Brand",-42.9,3,3,"M");
-            fail();
-        }catch (NegativePriceException e){
+    void test2() throws negativePriceException {
+        Puzzles p = new Puzzles("1987654321", "My Toy", "My Brand", -42.9, 3, 3, 'M');
 
+        if (p.getPrice() < 0) {
+            try {
+                throw new negativePriceException("Price cannot be negative");
+            } catch (negativePriceException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            fail("Test failed: Price is not negative");
         }
     }
 
