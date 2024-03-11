@@ -53,7 +53,7 @@ public class AppManager {
                 addNewToy();
                 break;
             case 3:
-                //removeToy();
+                removeToy();
                 break;
             case 4:
                 try {
@@ -206,23 +206,23 @@ public class AppManager {
         return toy;
     }
      
-    /*
+    /*/
      * This method handles the remove toy option
      * It prompts the user to enter the serial number of the toy to remove
      * It then searches the inventory for the toy with that serial number and removes it
      */
-    // public void removeToy() {
-    //     String removeSN = menu.removeToyPrompt();
-    //     for (Toys toy : toys){
-    //         if (toy.getSN().equals(removeSN)){
-    //             toys.remove(toy);
-    //             System.out.println("The toy has been removed successfully!");
-    //             break;
-    //         }
-    //     }
-    //     displayMenuMethod();
+    public void removeToy() {
+        String removeSN = menu.promoteSerialNumberInput();
+        for (Toys toy : toys){
+         if (toy.getSN().equals(removeSN)){
+                toys.remove(toy);
+                System.out.println("The toy has been removed successfully!");
+                break;
+             }
+         }
+         displayMenuMethod();
         
-    // }
+     }
  
     /**
      * This method handles the gift suggestion option
