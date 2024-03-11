@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.BufferedWriter;
 // Importing the io packages and util packages
 import java.io.File;
 import java.io.PrintWriter;
@@ -9,11 +8,7 @@ import java.util.Scanner;
 
 // Importing the exceptions package
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import exceptions.giftSuggestionException;
-import exceptions.NegativePriceException;
 
 // Importing the view and model classes
 import view.AppMenu;
@@ -58,7 +53,7 @@ public class AppManager {
                 addNewToy();
                 break;
             case 3:
-                removeToy();
+                //removeToy();
                 break;
             case 4:
                 try {
@@ -68,13 +63,6 @@ public class AppManager {
                 }
                 break;
             case 5:
-            try {
-                NegativePrice();
-            } catch (NegativePriceException e) {
-                e.printStackTrace();
-            }
-            break;
-            case 6:
                 save();
                 System.exit(0);
             default:
@@ -174,89 +162,68 @@ public class AppManager {
         searchProsses(foundToys);
     }
 
-    public static void removeToy(String removeItem) {
-        File inputFile = new File("res/toys.txt");
+    public void addNewToy() {
+        String[] addToy = menu.addNewToyPrompt();
 
-        try(Scanner fw = new Scanner(inputFile)){
-            BufferedWriter writer = new BufferedWriter(new Filewriter("res/toys.tmp"));
-
-            boolean found = false;
-
-            while (scanner.hasNextLine()){
-                String data = scanner.nextLine();
-                String[] toyData = data.split(";");
-
-                if (toyData[0].trim().equalsIgnoreCase(removeItem.trim())){
-                    found = true;
-                }
-                else{
-                    writer.write(data);
-                    writer.newLine();
-                }
-            }
-            if (found){
-                System.out.println("Toy with serial number " + removeItem + "has been removed");
+        if (addToy[0] == "Figures"){
+            toys.add(new Figures(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), "Added"));
+        }
+        else if (addToy[0] == "Animals"){
+            toys.add(new Animals(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), "Added", 'A'));
+        }
+        else if (addToy[0] == "Puzzles"){
+            toys.add(new Puzzles(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), 'P'));
+        }
+        else if (addToy[0] == "BoardGames"){
+            int minPlayers = Integer.parseInt(addToy[7]);
+            int maxPlayers = Integer.parseInt(addToy[8]);
+            String[] designers;
+            if (addToy[9].contains(",")){
+                designers = addToy[9].split(",");
             }
             else{
-                System.out.println("Toy with serial number " + removeItem + " does not exist");
+                // If there is only one designer
+                designers = new String[1];
+                designers[0] = addToy[9];
             }
-            catch(IOException e ){
-                e.printStackTrace();
-            }
-            inputFile.delete();
-
-            new File("res/toys.tmp");
+            toys.add(new BoardGames(addToy[1], addToy[2], addToy[3], Double.parseDouble(addToy[4]), Integer.parseInt(addToy[5]), Integer.parseInt(addToy[6]), minPlayers, maxPlayers, designers));
         }
+        else{
+            System.out.println("Invalid data in the file.");
+            System.exit(0);
+        }
+
+        save();
     }
-    public static void addNewToy() {
-        File inputFile = new File("res/toys.txt");
-        Toys addToy = menu.addNewToyPrompt;
 
-        try (BufferedWriter writer = new BufferedWriter(new PrintWriter(new FileWriter(inputFile, true)))) {
-           writer.write(toyToString(add));
-           writer.newLine();
-           System.out.println("added new toy");
-           catch(IOException e){
-            e.printStackTrace();
-           }
-    }
-    private String toyToString(){
-
-        StringBuilder str_build = new StringBuilder();
-        str_build.append(toy.getSN()).append(";");
-        str_build.append(toy.getName()).append(";");
-        str_build.append(toy.getBrand()).append(";");
-        str_build.append(toy.getPrice()).append(";");
-        str_build.append(toy.getAvaiableCount()).append(";");
-        str_build.append(toy.getAgeAppropriate()).append(";");
-    
-        if (toy instanceof Animals){
-            str_build.append((Animals) toy).getMaterial().append(";");
-            str_build.append((Animals) toy).getSize();
+    public String toyToString(String[] addToy) {
+        String toy = "";
+        toy = addToy[0] + ";" + addToy[1] + ";" + addToy[2] + ";" + addToy[3] + ";" + addToy[4] + "-" + addToy[5];
+        if (addToy.length == 8) {
+            toy += addToy[6] + "-" + addToy[7] + ";" + addToy[8];
         }
-        else if (toy instanceof BoardGames){
-            str_build.append(((BoardGames) toy).getMinPlayers()).append("-").append(((BoardGames) toy).getMaxPlayers()).append(";");
-        }
-        else if (toy instanceof Figures){
-            str_build.append(((Figures) toy).getClassification());
-        }
-        else if (toy instanceof Puzzles){
-            str_build.append(((Puzzles) toy).getType());
-            
-        }
-        String[] designers = ((BoardGames) toy).getDesigners();
-        for (int i = 0; i< designers.length; i++){
-            str_build.append(designers[i]);
-            if (i< designers.length - 1){
-                str_build.append(",");
-                System.out.println("Anita Max Wynn");
-            }
-        }
+        
+        return toy;
     }
      
-
+    /*
+     * This method handles the remove toy option
+     * It prompts the user to enter the serial number of the toy to remove
+     * It then searches the inventory for the toy with that serial number and removes it
+     */
+    // public void removeToy() {
+    //     String removeSN = menu.removeToyPrompt();
+    //     for (Toys toy : toys){
+    //         if (toy.getSN().equals(removeSN)){
+    //             toys.remove(toy);
+    //             System.out.println("The toy has been removed successfully!");
+    //             break;
+    //         }
+    //     }
+    //     displayMenuMethod();
+        
+    // }
  
-
     /**
      * This method handles the gift suggestion option
      * It prompts the user to enter the age, toy type, minimum price, and maximum price
